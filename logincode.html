@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SheCabs - Drive with Confidence</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #F5E7DE;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        #intro-animation {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #F2BFA4;
+            color: #fff;
+            text-align: center;
+            animation: fadeOut 5s ease-out forwards;
+        }
+
+        #intro-logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .animated-title {
+            font-size: 4rem;
+            color: #F5E7DE;
+            animation: zoomIn 2s ease-in-out;
+            letter-spacing: 3px;
+        }
+
+        #main-content, #user-registration, #user-module, #driver-registration, #driver-module {
+            display: none;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header {
+            padding: 20px 0;
+            color: #333;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-direction: column;
+        }
+
+        .logo-container img {
+            width: 80px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .module, .registration {
+            background-color: rgba(245, 231, 222, 0.85);
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .input-group label {
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            margin-top: 5px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #F2BFA4;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        button:hover {
+            background-color: #F5E7DE;
+        }
+
+        /* Animations */
+        @keyframes zoomIn {
+            0% {
+                transform: scale(0.1);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            100% {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        .recording-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .recording-controls button {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animation Intro -->
+    <div id="intro-animation">
+        <img id="intro-logo" src="final.jpg" alt="SheCabs Logo">
+        <h1 class="animated-title">SheCabs</h1>
+        <h2 class="animated-subtitle">Drive with Confidence</h2>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle intro animation and main content display
+            setTimeout(() => {
+                document.getElementById('intro-animation').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 5000);
+    
+            // Initialize Mapbox map
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic25pdGhpayIsImEiOiJjbTV6NW54aGgwMHBhMmtzN2dxMjhpMzI3In0.ERskjO4Zn7yuHi5aboBr0g'; // Replace with your actual API key
+    
+            var map = new mapboxgl.Map({
+                container: 'map', // The div where the map will be displayed
+                style: 'mapbox://styles/mapbox/streets-v11', // Map style (matches Google Maps)
+                center: [78.44947857493894, 17.56260718335477], // Longitude, Latitude (Hyderabad example)
+                zoom: 12 // Match Google Maps zoom level
+            });
+    
+            // Add zoom and rotation controls to the map
+            map.addControl(new mapboxgl.NavigationControl());
+    
+            // Add a marker (Example: Malla Reddy University)
+            new mapboxgl.Marker()
+                .setLngLat([78.44947857493894, 17.56260718335477]) // Longitude, Latitude
+                .addTo(map);
+        });
+    </script>
+    
+
+    <!-- Main Content Section (initially hidden) -->
+    <div id="main-content">
+        <header>
+            <div class="logo-container">
+                <img src="final.jpg" alt="Final Logo">
+                <h1>SheCabs</h1>
+                <h2>DRIVE WITH CONFIDENCE</h2>
+            </div>
+            <h2>Select Your Role</h2>
+            <button id="user-module-btn">User</button>
+            <button id="driver-module-btn">Driver</button>
+        </header>
+    </div>
+
+    <!-- User Registration Page -->
+    <div id="user-registration" class="registration">
+        <div class="logo-container">
+            <img src="final.jpg" alt="Final Logo">
+            <h1>SheCabs</h1>
+            <h2>DRIVE WITH CONFIDENCE</h2>
+        </div>
+        <h2>User Registration</h2>
+        <div class="input-group">
+            <label for="user-email">Email</label>
+            <input type="email" id="user-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+            <label for="user-phone">Phone Number</label>
+            <input type="text" id="user-phone" placeholder="Enter your phone number" required>
+        </div>
+        <button id="user-register">Register</button>
+        <button id="back-to-main-from-user-registration">Back</button>
+    </div>
+
+    <!-- User Module -->
+    <div id="user-module" class="module" style="display: none;">
+        <div class="logo-container">
+            <img src="final.jpg" alt="Final Logo">
+            <h1>SheCabs</h1>
+            <h2>DRIVE WITH CONFIDENCE</h2>
+        </div>
+        <h2>User Module</h2>
+        <div class="input-group">
+            <label for="pickup">Pickup Location</label>
+            <input type="text" id="pickup" placeholder="Enter your pickup location">
+        </div>
+        <div class="input-group">
+            <label for="drop">Drop Location</label>
+            <input type="text" id="drop" placeholder="Enter your drop location">
+        </div>
+        <div class="input-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" placeholder="Enter your phone number" required>
+        </div>
+        <button id="calculate-fare-user">Calculate Fare</button>
+        <div class="fare-estimate">
+            <p id="fare-user">Estimated Fare: ₹0.00</p>
+            <p id="distance-user">Distance: 0 km</p>
+        </div>
+        
+        <!-- Voice Recording Feature for User Module -->
+        <h2>Voice Commands</h2>
+        <div class="recording-controls">
+            <button id="start-recording-user">Start Recording</button>
+            <button id="stop-recording-user" disabled>Stop Recording</button>
+            <a id="download-user" style="display: none;">Download Recording</a>
+        </div>
+        <audio id="user-audio" controls style="display: none;"></audio>
+        
+        <button id="emergency-button" onclick="emergencyCall()">Emergency</button>
+        <button id="report-fraud-button" onclick="reportFraudDriver()">Report Fraud Driver</button>
+        <button id="back-to-main-from-user-module">Back</button>
+        
+        <h2>Map</h2>
+      
+
+        <div id="map" style="width: 100%; height: 400px;"></div>
+
+    </div>
+
+    <!-- Driver Registration Page -->
+    <div id="driver-registration" class="registration">
+        <div class="logo-container">
+            <img src="final.jpg" alt="Final Logo">
+            <h1>SheCabs</h1>
+            <h2>DRIVE WITH CONFIDENCE</h2>
+        </div>
+        <h2>Driver Registration</h2>
+        <div class="input-group">
+            <label for="driver-name">Driver Name</label>
+            <input type="text" id="driver-name" placeholder="Enter your name" required>
+        </div>
+        <div class="input-group">
+            <label for="driver-email">Email</label>
+            <input type="email" id="driver-email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-group">
+            <label for="driver-phone">Phone Number</label>
+            <input type="text" id="driver-phone" placeholder="Enter your phone number" required>
+        </div>
+        
+<div class="input-group">
+            <label for="pan">PAN</label>
+            <input type="text" id="pan" placeholder="Enter your PAN" required>
+        </div>
+        <div class="input-group">
+            <label for="aadhar">Aadhar</label>
+            <input type="text" id="aadhar" placeholder="Enter your Aadhar" required>
+        </div>
+        <button id="driver-register">Register</button>
+        <button id="back-to-main-from-driver-registration">Back</button>
+    </div>
+
+
+       
+        
+    </div>
+
+    <!-- Driver Module -->
+    <div id="driver-module" class="module" style="display: none;">
+        <div class="logo-container">
+            <img src="final.jpg" alt="Final Logo">
+            <h1>SheCabs</h1>
+            <h2>DRIVE WITH CONFIDENCE</h2>
+        </div>
+        <h2>Driver Module</h2>
+        <div class="input-group">
+            <label for="drop-driver">Drop Location</label>
+            <input type="text" id="drop-driver" placeholder="Enter your drop location">
+        </div>
+        <button id="calculate-fare-driver">Calculate Fare</button>
+        <div class="fare-estimate">
+            <p id="fare-driver">Estimated Fare: ₹0.00</p>
+            <p id="distance-driver">Distance: 0 km</p>
+         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3803.8441099245856!2d78.44947857493894!3d17.56260718335477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb8ff8652b6823%3A0x981713dbb4b708c3!2sMalla%20Reddy%20University!5e0!3m2!1sen!2sin!4v1729608872700!5m2!1sen!2sin" 
+                width="600" 
+                height="450" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy"></iframe>
+
+
+
+
+
+
+</div>
+        
+        <!-- Voice Recording Feature for Driver Module -->
+        <h2>Voice Commands</h2>
+        <div class="recording-controls">
+            <button id="start-recording-driver">Start Recording</button>
+            <button id="stop-recording-driver" disabled>Stop Recording</button>
+            <a id="download-driver" style="display: none;">Download Recording</a>
+        </div>
+        <audio id="driver-audio" controls style="display: none;"></audio>
+
+        <button id="accept-order" onclick="acceptOrder()">Accept Order</button>
+        <button id="decline-order" onclick="declineOrder()">Decline Order</button>
+        <button id="emergency-button-driver" onclick="emergencyCall()">Emergency</button>
+        <button id="report-fraud-button-driver" onclick="reportFraudUser()">Report Fraud User</button>
+        <button id="back-to-main-from-driver-module">Back</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle intro animation and main content display
+            setTimeout(() => {
+                document.getElementById('intro-animation').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            }, 5000);
+
+            // Switch to user registration
+            document.getElementById('user-module-btn').addEventListener('click', () => {
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('user-registration').style.display = 'block';
+            });
+
+            // Switch to driver registration
+            document.getElementById('driver-module-btn').addEventListener('click', () => {
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('driver-registration').style.display = 'block';
+            });
+
+            // User registration logic
+            document.getElementById('user-register').addEventListener('click', () => {
+                // Perform registration logic here
+                alert('User registered!');
+                document.getElementById('user-registration').style.display = 'none';
+                document.getElementById('user-module').style.display = 'block';
+            });
+
+            // Driver registration logic
+            document.getElementById('driver-register').addEventListener('click', () => {
+                // Perform registration logic here
+                alert('Driver registered!');
+                document.getElementById('driver-registration').style.display = 'none';
+                document.getElementById('driver-module').style.display = 'block';
+            });
+
+            // Back buttons
+            document.getElementById('back-to-main-from-user-registration').addEventListener('click', () => {
+                document.getElementById('user-registration').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            });
+
+            document.getElementById('back-to-main-from-driver-registration').addEventListener('click', () => {
+                document.getElementById('driver-registration').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            });
+
+            document.getElementById('back-to-main-from-user-module').addEventListener('click', () => {
+                document.getElementById('user-module').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            });
+
+            document.getElementById('back-to-main-from-driver-module').addEventListener('click', () => {
+                document.getElementById('driver-module').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+            });
+
+            // Fare calculation
+            const fareRate = 10; // Example fare rate per kilometer
+
+            document.getElementById('calculate-fare-user').addEventListener('click', () => {
+                const distanceUser = Math.random() * 10; // Random distance for demo
+                const fareUser = distanceUser * fareRate;
+                document.getElementById('fare-user').innerText = `Estimated Fare: ₹${fareUser.toFixed(2)}`;
+                document.getElementById('distance-user').innerText = `Distance: ${distanceUser.toFixed(2)} km`;
+            });
+
+            document.getElementById('calculate-fare-driver').addEventListener('click', () => {
+                const distanceDriver = Math.random() * 10; // Random distance for demo
+                const fareDriver = distanceDriver * fareRate;
+                document.getElementById('fare-driver').innerText = `Estimated Fare: ₹${fareDriver.toFixed(2)}`;
+                document.getElementById('distance-driver').innerText = `Distance: ${distanceDriver.toFixed(2)} km`;
+            });
+
+            // Emergency and fraud reporting functions
+            window.emergencyCall = function() {
+                alert('Calling emergency services...');
+            };
+
+            window.reportFraudDriver = function() {
+                alert('Reporting fraud driver...');
+            };
+
+            window.reportFraudUser = function() {
+                alert('Reporting fraud user...');
+            };
+
+            // Order acceptance and decline functions
+            window.acceptOrder = function() {
+                alert('Order accepted.');
+            };
+
+            window.declineOrder = function() {
+                alert('Order declined.');
+            };
+
+            // Voice recording feature
+            const userAudio = document.getElementById('user-audio');
+            const startRecordingUser = document.getElementById('start-recording-user');
+            const stopRecordingUser = document.getElementById('stop-recording-user');
+            const downloadUser = document.getElementById('download-user');
+
+            const driverAudio = document.getElementById('driver-audio');
+            const startRecordingDriver = document.getElementById('start-recording-driver');
+            const stopRecordingDriver = document.getElementById('stop-recording-driver');
+            const downloadDriver = document.getElementById('download-driver');
+
+            let mediaRecorderUser;
+            let recordedChunksUser = [];
+
+            let mediaRecorderDriver;
+            let recordedChunksDriver = [];
+
+            startRecordingUser.addEventListener('click', () => {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        mediaRecorderUser = new MediaRecorder(stream);
+                        mediaRecorderUser.start();
+                        mediaRecorderUser.ondataavailable = (event) => {
+                            recordedChunksUser.push(event.data);
+                        };
+                        mediaRecorderUser.onstop = () => {
+                            const blob = new Blob(recordedChunksUser, { type: 'audio/wav' });
+                            const url = URL.createObjectURL(blob);
+                            downloadUser.href = url;
+                            downloadUser.download = 'user_recording.wav';
+                            downloadUser.style.display = 'block';
+                            userAudio.src = url;
+                            userAudio.style.display = 'block';
+                        };
+                        stopRecordingUser.disabled = false;
+                        startRecordingUser.disabled = true;
+                    });
+            });
+
+            stopRecordingUser.addEventListener('click', () => {
+                mediaRecorderUser.stop();
+                stopRecordingUser.disabled = true;
+                startRecordingUser.disabled = false;
+            });
+
+            startRecordingDriver.addEventListener('click', () => {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        mediaRecorderDriver = new MediaRecorder(stream);
+                        mediaRecorderDriver.start();
+                        mediaRecorderDriver.ondataavailable = (event) => {
+                            recordedChunksDriver.push(event.data);
+                        };
+                        mediaRecorderDriver.onstop = () => {
+                            const blob = new Blob(recordedChunksDriver, { type: 'audio/wav' });
+                            const url = URL.createObjectURL(blob);
+                            downloadDriver.href = url;
+                            downloadDriver.download = 'driver_recording.wav';
+                            downloadDriver.style.display = 'block';
+                            driverAudio.src = url;
+                            driverAudio.style.display = 'block';
+                        };
+                        stopRecordingDriver.disabled = false;
+                        startRecordingDriver.disabled = true;
+                    });
+            });
+
+            stopRecordingDriver.addEventListener('click', () => {
+                mediaRecorderDriver.stop();
+                stopRecordingDriver.disabled = true;
+                startRecordingDriver.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
